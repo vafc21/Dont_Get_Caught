@@ -84,10 +84,12 @@ def enemy_can_see_player(enemy_pos, p_pos = player_pos):
         return False
 
 def enemy_hits_player(enemy_pos, p_pos = player_pos):
-    distance = p_pos - enemy_pos
-    if distance.length() < 20:  # Adjust the distance threshold as needed
+    distance = enemy_pos - p_pos
+    if distance.length() <= 20:  # Adjust the distance threshold as needed
+        print('hit')
         return True
     else:
+        #print('no hit')
         return False
 
 while running:
@@ -121,7 +123,15 @@ while running:
         if player_pos.x >= 50 and player_pos.x <= screen.get_width() - 50:
             
             
-            if enemy_can_see_player(enem.pos) == False:  # If the enemy can't see the player
+            
+            if enemy_can_see_player(enem.pos) == True:  # Check if the enemy can see the player
+                enem.random_pos = None  # Reset random position when chasing the player
+                enem.move_towards_target(player_pos, speed=player_speed - 2)  # Move toward the player
+                hits = enemy_hits_player(enem.pos)
+    
+            
+            
+            elif enemy_can_see_player(enem.pos) == False:  # If the enemy can't see the player
                 # Generate a random position only once
                 if not hasattr(enem, "random_pos") or enem.random_pos is None:
                     enem.random_pos = get_random_pos()
@@ -132,10 +142,9 @@ while running:
 
                 # Move toward the random position
                 enem.move_towards_target(enem.random_pos, speed=player_speed - 2)
-            elif enemy_can_see_player(enem.pos) == True:  # Check if the enemy can see the player
-                enem.random_pos = None  # Reset random position when chasing the player
-                enem.move_towards_target(player_pos, speed=player_speed - 2)  # Move toward the player
-            if enemy_hits_player(enem.pos) == True:
+                hits = enemy_hits_player(enem.pos)
+            if hits == True:
+            
                 enemies.remove(enem)
                 player_harts -= 1
                 if player_harts <= 0:
@@ -143,6 +152,7 @@ while running:
                     running = False
                 else:
                     print("You have " + str(player_harts) + " harts left")
+            
         
     if player_pos.x >= screen.get_width() - 50 :
         level_complete = True
