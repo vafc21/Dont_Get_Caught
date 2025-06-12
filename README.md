@@ -30,6 +30,12 @@ I created this project to learn the basics of game development with Python and P
 
 ## How to Run  
 1. Clone the repo  
-2. Run the game:
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Run the game:
    ```bash
    python main.py
+   ```
+
