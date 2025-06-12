@@ -16,7 +16,7 @@ game_box_size = pygame.math.Vector2(550, 450)
 player_pos = pygame.math.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 player_speed = 5
 default_size = 20
-player_harts = 3
+player_hearts = 3
 
 # debugging
 mouse_debug = False
@@ -152,12 +152,12 @@ while running:
             if hits == True:
             
                 enemies.remove(enem)
-                player_harts -= 1
-                if player_harts <= 0:
+                player_hearts -= 1
+                if player_hearts <= 0:
                     print("Game Over")
                     running = False
                 else:
-                    print("You have " + str(player_harts) + " harts left")
+                    print("You have " + str(player_hearts) + " hearts left")
             
             if enemy_can_see_player(enem.pos,player1_pos) == True:  # Check if the enemy can see the player
                 enem.random_pos = None  # Reset random position when chasing the player
@@ -165,7 +165,7 @@ while running:
                 
             
             
-            if enemy_can_see_player(enem.pos) == False:  # If the enemy can't see the player
+            if enemy_can_see_player(enem.pos, player1_pos) == False:  # If the enemy can't see the player
                 # Generate a random position only once
                 if not hasattr(enem, "random_pos") or enem.random_pos is None:
                     enem.random_pos = get_random_pos()
@@ -192,7 +192,7 @@ while running:
         level += 1
         level_complete = False
         difficulty = new_level(level)
-        player_harts = 3
+        player_hearts = 3
         enemies.clear()
         make_level(difficulty)
         
